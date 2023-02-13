@@ -46,7 +46,7 @@
             >;
         };
 
-    nav {
+        nav {
             bindings = <
     &bt BT_CLR &bt BT_NXT &bt BT_PRV &none       &none &none &none       &kp UP       &none     &kp BSPC
     &trans     &trans     &trans     &trans      &none &none &kp LEFT    &kp DOWN     &kp RIGHT &none
