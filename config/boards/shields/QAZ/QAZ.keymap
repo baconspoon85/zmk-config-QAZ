@@ -9,18 +9,39 @@
 #include <dt-bindings/zmk/bt.h>
 
 #define DEFAULT 0
-#define NUM_SYM 1
-#define NAV     2
+#define LOWER 1
+#define RAISE 2
+#define FUNCTION 3
+#define BLUE 4
+#define NAV 5
 
 / {
-    behaviors {
-        hm: homerow_mods {
-            compatible = "zmk,behavior-hold-tap";
-            label = "homerow mods";
-            #binding-cells = <2>;
-            tapping-term-ms = <225>;
-            flavor = "tap-preferred";
-            bindings = <&kp>, <&kp>;
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        tri_layer {
+            if-layers = <1 2>;
+            then-layer = <3>;
+        };
+    };
+};
+
+/ {
+    combos {
+        compatible = "zmk,combos";
+        combo_escape {
+            timeout-ms = <50>;
+            key-positions = <0 1 2>;
+            bindings = <&kp ESCAPE>;
+        };
+        combo_backspace {
+            timeout-ms = <50>;
+            key-positions = <7 8 9>;
+            bindings = <&kp BACKSPACE>;
+        };
+        combo_nav {
+            timeout-ms = <50>;
+            key-positions = <12 13>;
+            bindings = <&mo NAV>;
         };
     };
 };
@@ -29,29 +50,52 @@
     keymap {
         compatible = "zmk,keymap";
 
-        default_layer {
+        DEFAULT {
             bindings = <
-    &kp Q      &kp W      &kp E       &kp R       &kp T  &kp Y  &kp U       &kp I       &kp O      &kp P
-    &hm LGUI A &hm LALT S &hm LCTRL D &hm LSHFT F &kp G  &kp H  &hm RSHFT J &hm RCTRL K &hm RALT L &hm RGUI RET
-    &kp Z                 &kp X       &kp C       &kp V  &kp B  &kp N       &kp M       &kp COMMA  &kp DOT
-    &kp LSHFT  &kp LGUI   &kp LALT       &lt NAV RET    &lt NUM_SYM SPACE   &kp COLON   &kp SQT    &kp FSLH
+    &kp Q           &kp W           &kp E           &kp R           &kp T           &kp Y           &kp U           &kp I           &kp O           &kp P
+    &mt LCTRL A     &kp S           &kp D           &kp F           &kp G           &kp H           &kp J           &kp K           &kp L           &lt BLUE ENTER
+    &mt LSHIFT Z    &kp X           &kp C           &kp V           &kp B           &kp N           &kp M           &kp COMMA       &mt RSHIFT DOT
+                    &none           &mt LCTRL LGUI  &mt LALT DELETE &lt LOWER BACK  &lt RAISE SPACE &KP RALT        &kp RCTRL       &none  
             >;
         };
-        num_sym {
+        LOWER {
             bindings = <
-    &kp N1     &kp N2     &kp N3     &kp N4     &kp N5 &kp N6 &kp N7     &kp N8      &kp N9    &kp N0
-    &trans     &trans     &trans     &trans     &trans &trans &trans     &trans      &kp EQUAL &kp MINUS
-    &kp DEL               &none      &none      &none  &none  &none      &none       &none     &kp DOT
-    &bootloader &reset    &none         &trans        &trans             &kp RET     &trans    &kp FSLH
+    &kp N1          &kp N2          &kp N3          &kp N4          &kp N5          &kp N6          &kp N7          &kp N8          &kp N9          &kp N0
+    &kp TAB         &kp MINUS       &kp EQUAL       &trans          &trans          &kp LEFT        &kc DOWN        &kc UP          &kc RIGHT       &kp SQT
+    &kp GRAVE       &kp BACKSLASH   &kp C_AL_CALC   &trans          &trans          &trans          &trans          &kc SEMICOLON   &kp SLASH          
+                    &none           &trans          &trans          &trans          &trans          &kp LBKT        &kp RBKT        &none
             >;
         };
-
-        nav {
+        RAISE {
             bindings = <
-    &bt BT_CLR &bt BT_NXT &bt BT_PRV &none       &none &none &none       &kp UP       &none     &kp BSPC
-    &trans     &trans     &trans     &trans      &none &none &kp LEFT    &kp DOWN     &kp RIGHT &none
-    &none                 &none      &none       &none &none &none       &none        &none     &none
-    &none      &none      &none         &trans        &trans             &kp RET      &trans    &kp FSLH
+    &kp EXCLAMATION &kp AT          &kp HASH        &kp DOLLAR      &kp PERCENT     &kp CARET       &kp AMPERSAND   &kp ASTERISK    &kp LPAR        &kp RPAR
+    &kp CAPS        &kp UNDERSCORE  &kp PLUS        &none           &none           &none           &kc HOME        &kc PG_DN       &kc PG_UP       &kc END         &kp DQT
+    &kp TILDE       &kp PIPE        &none           &none           &none           &none           &none           &kc COLON       &kp QUESTION
+                    &none           &none           &none           &trans          &trans          &kp LBRC        &kp RBRC        &none
+            >;
+        };
+        FUNCTION {
+            bindings = <
+    &kp F1          &kp F2          &kp F3          &kp F4          &kp F5          &kp F6          &kp F7          &kp F8          &kp F9          &kp F10
+    &kp F11         &kp F12         &kp F13         &kp F14         &kp F15         &kp F16         &kp F17         &kp F18         &kp F19         &kp F20
+    &kp F21         &kp F22         &kp F23         &kp F24         &none           &none           &kp C_MUTE      &kp C_VOL_DN    &kp C_VOL_UP          
+                    &none           &none           &none           &trans          &trans          &none           &none           &none
+            >;
+        };
+        BLUE {
+            bindings = <
+    &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4    &bt BT_SEL 5    &none           &none           &none           &none           &none
+    &none           &none           &none           &none           &none           &none           &none           &none           &none           &mo BLUE
+    &none           &none           &none           &none           &none           &none           &none           &none           &none
+                    &none           &none           &none           &bt BT_CLR      &none           &none           &none           &none
+            >;
+        };
+        NAV {
+            bindings = <
+    &none           &none           &none           &none           &none           &none           &none           &kp UP          &none           &kp PRINTSCREEN
+    &none           &none           &kp D           &kp F           &none           &none           &kp LEFT        &kp DOWN        &kp RIGHT       &none
+    &none           &none           &none           &none           &none           &none           &none           &none           &none
+                    &none           &none           &none           &none           &none           &none           &none           &none
             >;
         };
     };
