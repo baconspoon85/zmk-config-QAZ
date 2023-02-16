@@ -25,14 +25,19 @@
     };
 };
 
-&mt {
-    tapping-term-ms = <400>;
+gqt: global-quick-tap {
+    compatible = "zmk,behavior-hold-tap";
+    label = "GLOBAL_QUICK_TAP";
+    #binding-cells = <2>;
+    flavor = "tap-preferred";
+    tapping-term-ms = <200>;
+    quick-tap-ms = <125>;
+    global-quick-tap;
+    bindings = <&kp>, <&kp>;
 };
+
 &mt {
-    tapping-term-ms = <400>;
-};
-&mt {
-    tapping-term-ms = <400>;
+    tapping-term-ms = <250>;
 };
 
 / {
@@ -59,12 +64,11 @@
 / {
     keymap {
         compatible = "zmk,keymap";
-
         DEFAULT {
             bindings = <
     &kp Q           &kp W           &kp E           &kp R           &kp T           &kp Y           &kp U           &kp I           &kp O           &kp P
-    &mt LCTRL A     &kp S           &kp D           &kp F           &kp G           &kp H           &kp J           &kp K           &kp L           &lt BLUE ENTER
-    &mt LSHIFT Z    &kp X           &kp C           &kp V           &kp B           &kp N           &kp M           &kp COMMA       &mt RSHIFT DOT
+    &gqt LCTRL A    &kp S           &kp D           &kp F           &kp G           &kp H           &kp J           &kp K           &kp L           &lt BLUE ENTER
+    &gqt LSHIFT Z   &kp X           &kp C           &kp V           &kp B           &kp N           &kp M           &kp COMMA       &gqt RSHIFT DOT
                     &none           &mt LCTRL LGUI  &mt LALT DELETE &lt LOWER BSPC  &lt RAISE SPACE &kp RALT        &kp RCTRL       &none  
             >;
         };
@@ -79,7 +83,7 @@
         RAISE {
             bindings = <
     &kp EXCLAMATION &kp AT          &kp HASH        &kp DOLLAR      &kp PERCENT     &kp CARET       &kp AMPERSAND   &kp ASTERISK    &kp LPAR        &kp RPAR
-    &kp CAPS        &kp UNDERSCORE  &kp PLUS        &none           &none           &none           &kp HOME        &kp PG_DN       &kp PG_UP       &kp END         &kp DQT
+    &kp CAPS        &kp UNDERSCORE  &kp PLUS        &none           &none           &kp HOME        &kp PG_DN       &kp PG_UP       &kp END         &kp DQT
     &kp TILDE       &kp PIPE        &none           &none           &none           &none           &none           &kp COLON       &kp QUESTION
                     &none           &none           &none           &trans          &trans          &kp LBRC        &kp RBRC        &none
             >;
@@ -95,9 +99,9 @@
         BLUE {
             bindings = <
     &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4    &none           &none           &none           &none           &none
-    &none           &none           &none           &none           &none           &none           &none           &none           &none           &mo BLUE
+    &bt BT_CLR      &none           &none           &none           &none           &none           &none           &none           &none           &mo BLUE
     &none           &none           &none           &none           &bootloader     &none           &none           &none           &none
-                    &none           &none           &none           &bt BT_CLR      &none           &none           &none           &none
+                    &none           &none           &none           &bt BT_PRV      &bt BT_NXT      &none           &none           &none
             >;
         };
         NAV {
