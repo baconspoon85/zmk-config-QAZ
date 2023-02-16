@@ -25,12 +25,17 @@
     };
 };
 
-&mt {
-    tapping-term-ms = <250>;
-};
-
-&lt {
-    tapping-term-ms = <250>;
+/ {
+    behaviors {
+        gqt: global-quick-tap {
+            compatible = "zmk,behavior-hold-tap";
+            label = "GLOBAL_QUICK_TAP";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <250>;
+            quick-tap-ms = <125>;
+            global-quick-tap;
+            bindings = <&kp>, <&kp>;
 };
 
 / {
@@ -60,8 +65,8 @@
         DEFAULT {
             bindings = <
     &kp Q           &kp W           &kp E           &kp R           &kp T           &kp Y           &kp U           &kp I           &kp O           &kp P
-    &mt LCTRL A     &kp S           &kp D           &kp F           &kp G           &kp H           &kp J           &kp K           &kp L           &lt BLUE ENTER
-    &mt LSHIFT Z    &kp X           &kp C           &kp V           &kp B           &kp N           &kp M           &kp COMMA       &mt RSHIFT DOT
+    &gqt LCTRL A    &kp S           &kp D           &kp F           &kp G           &kp H           &kp J           &kp K           &kp L           &lt BLUE ENTER
+    &gqt LSHIFT Z   &kp X           &kp C           &kp V           &kp B           &kp N           &kp M           &kp COMMA       &gqt RSHIFT DOT
                     &none           &mt LCTRL LGUI  &mt LALT DELETE &lt LOWER BSPC  &lt RAISE SPACE &kp RALT        &kp RCTRL       &none  
             >;
         };
