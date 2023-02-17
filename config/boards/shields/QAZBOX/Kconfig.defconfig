@@ -1,0 +1,6 @@
+if SHIELD_QAZBOX
+
+config ZMK_KEYBOARD_NAME
+    default "QAZBOX"
+    
+endif
